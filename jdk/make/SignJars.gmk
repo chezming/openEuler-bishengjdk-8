@@ -99,6 +99,10 @@ JAR_LIST := \
     ucrypto.jar \
     #
 
+ifeq ($(OPENJDK_TARGET_CPU_ARCH), aarch64)
+	JAR_LIST += kae_openssl.jar
+endif
+
 UNSIGNED_JARS := $(wildcard $(addprefix $(JDK_OUTPUTDIR)/jce/unsigned/, $(JAR_LIST)))
 
 ifeq ($(UNSIGNED_JARS), )
