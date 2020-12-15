@@ -294,6 +294,10 @@ SECURITY_PKGS := \
     sun/security/pkcs11 \
     #
 
+ifeq ($(OPENJDK_TARGET_CPU_ARCH),aarch64)
+    SECURITY_PKGS += org/openeuler/security/openssl
+endif
+
 AIX_SRC_DIRS :=
 ifeq ($(OPENJDK_TARGET_OS),aix)
      AIX_SRC_DIRS += $(JDK_TOPDIR)/src/aix/classes
