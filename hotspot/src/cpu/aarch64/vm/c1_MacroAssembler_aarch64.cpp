@@ -251,7 +251,8 @@ void C1_MacroAssembler::zero_memory(Register addr, Register len, Register t1) {
   bind(loop);
   sub(len, len, unroll);
   for (int i = -unroll; i < 0; i++)
-    str(zr, Address(t1, i * wordSize));
+  // similar to #8196064 JEP 315, use base assembler
+    Assembler::str(zr, Address(t1, i * wordSize));
   bind(entry);
   add(t1, t1, unroll * wordSize);
   cbnz(len, loop);
