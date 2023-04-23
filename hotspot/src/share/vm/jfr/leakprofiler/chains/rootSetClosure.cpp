@@ -57,7 +57,7 @@ void RootSetClosure<Delegate>::do_oop(oop* ref) {
     return;
   }
 
-  assert(is_aligned(ref, HeapWordSize), "invariant");
+  assert(is_aligned(ref, sizeof(Oop)), "invariant");
   if (*ref != NULL) {
     _delegate->do_root(ref);
   }
