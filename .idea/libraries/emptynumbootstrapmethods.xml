@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="emptynumbootstrapmethods">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/hotspot/test/runtime/classFileParserBug/emptynumbootstrapmethods.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
