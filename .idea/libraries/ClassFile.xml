@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="ClassFile">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/hotspot/test/runtime/ClassFile/JsrRewritingTestCase.jar!/" />
+      <root url="jar://$PROJECT_DIR$/hotspot/test/runtime/ClassFile/testcase.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
