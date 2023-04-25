@@ -509,7 +509,6 @@ abstract public class TestScaffold extends TargetAdapter {
      */
     public void connect(String args[]) {
         ArgInfo argInfo = parseArgs(args);
-
         argInfo.targetVMArgs = VMConnection.getDebuggeeVMOptions() + " " + argInfo.targetVMArgs;
         connection = new VMConnection(argInfo.connectorSpec,
                                       argInfo.traceFlags);
