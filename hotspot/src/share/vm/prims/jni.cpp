@@ -32,8 +32,6 @@
 #include "classfile/systemDictionary.hpp"
 #include "classfile/vmSymbols.hpp"
 #include "interpreter/linkResolver.hpp"
-#include "jfr/jfrEvents.hpp"
-#include "jfr/support/jfrThreadId.hpp"
 #include "utilities/macros.hpp"
 #include "utilities/ostream.hpp"
 #if INCLUDE_ALL_GCS
@@ -94,6 +92,9 @@
 #ifdef TARGET_OS_FAMILY_bsd
 # include "os_bsd.inline.hpp"
 #endif
+#if INCLUDE_JFR
+#include "jfr/jfr.hpp"
+#endif
 
 static jint CurrentVersion = JNI_VERSION_1_8;
 
@@ -108,16 +109,6 @@ static jint CurrentVersion = JNI_VERSION_1_8;
 // the return value must be passed to the contructor of the object, and
 // the return value must be set before return (since the mark object has
 // a reference to it).
-//
-// Example:
-// DT_RETURN_MARK_DECL(SomeFunc, int);
-// JNI_ENTRY(int, SomeFunc, ...)
-//   int return_value = 0;
-//   DT_RETURN_MARK(SomeFunc, int, (const int&)return_value);
-//   foo(CHECK_0)
-//   return_value = 5;
-//   return return_value;
-// JNI_END
 #ifndef USDT2
 #define DT_RETURN_MARK_DECL(name, type)                                    \
   HS_DTRACE_PROBE_DECL1(hotspot_jni, name##__return, type);                \
@@ -245,14 +236,6 @@ intptr_t jfieldIDWorkaround::encode_klass_hash(Klass* k, intptr_t offset) {
     uintptr_t klass_hash = field_klass->identity_hash();
     return ((klass_hash & klass_mask) << klass_shift) | checked_mask_in_place;
   } else {
-#if 0
-    #ifndef PRODUCT
-    {
-      ResourceMark rm;
-      warning("VerifyJNIFields: long offset %d in %s", offset, k->external_name());
-    }
-    #endif
-#endif
     return 0;
   }
 }
@@ -279,14 +262,6 @@ void jfieldIDWorkaround::verify_instance_jfieldID(Klass* k, jfieldID id) {
       guarantee(klass_hash_ok(k, id),
     "Bug in native code: jfieldID class must match object");
     } else {
-#if 0
-      #ifndef PRODUCT
-      if (Verbose) {
-  ResourceMark rm;
-  warning("VerifyJNIFields: unverified offset %d for %s", offset, k->external_name());
-      }
-      #endif
-#endif
     }
   }
   guarantee(InstanceKlass::cast(k)->contains_field_offset(offset),
@@ -5018,24 +4993,7 @@ struct JNINativeInterface_* jni_functions_nocheck() {
   return &jni_NativeInterface;
 }
 
-static void post_thread_start_event(const JavaThread* jt) {
-  assert(jt != NULL, "invariant");
-  EventThreadStart event;
-  if (event.should_commit()) {
-    event.set_thread(JFR_THREAD_ID(jt));
-    event.set_parentThread((traceid)0);
-#if INCLUDE_JFR
-    if (EventThreadStart::is_stacktrace_enabled()) {
-      jt->jfr_thread_local()->set_cached_stack_trace_id((traceid)0);
-      event.commit();
-      jt->jfr_thread_local()->clear_cached_stack_trace();
-    } else
-#endif
-    {
-      event.commit();
-    }
-  }
-}
+
 
 // Invocation API
 
@@ -5266,7 +5224,7 @@ _JNI_IMPORT_OR_EXPORT_ jint JNICALL JNI_CreateJavaVM(JavaVM **vm, void **penv, v
        JvmtiExport::post_thread_start(thread);
     }
 
-    post_thread_start_event(thread);
+    JFR_ONLY(Jfr::on_thread_start(thread);)
 
 #ifndef PRODUCT
   #ifndef CALL_TEST_FUNC_WITH_WRAPPER_IF_NEEDED
@@ -5477,7 +5435,7 @@ static jint attach_current_thread(JavaVM *vm, void **penv, void *_args, bool dae
     JvmtiExport::post_thread_start(thread);
   }
 
-  post_thread_start_event(thread);
+  JFR_ONLY(Jfr::on_thread_start(thread);)
 
   *(JNIEnv**)penv = thread->jni_environment();
 
