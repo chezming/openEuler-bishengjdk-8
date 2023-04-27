@@ -126,7 +126,6 @@ void PhaseLive::compute(uint maxlrg) {
       for (uint k = i; k > 0; k--) {
         Node *phi = block->get_node(k - 1);
         if (l < phi->req()) {
-          add_liveout(p, _names.at(phi->in(l)->_idx), first_pass);
           add_liveout(worklist, p, _names.at(phi->in(l)->_idx), first_pass);
         }
       }
