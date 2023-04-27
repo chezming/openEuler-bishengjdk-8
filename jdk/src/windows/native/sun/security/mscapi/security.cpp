@@ -466,7 +466,11 @@ JNIEXPORT void JNICALL Java_sun_security_mscapi_CKeyStore_loadKeysOrCertificateC
             else
             {
                 if (bCallerFreeProv == TRUE) {
-                    ::CryptReleaseContext(hCryptProv, NULL); // deprecated
+                    if ((dwKeySpec & CERT_NCRYPT_KEY_SPEC) == CERT_NCRYPT_KEY_SPEC) {
+                        NCryptFreeObject(hCryptProv);
+                    } else {
+                        ::CryptReleaseContext(hCryptProv, NULL); // deprecated
+                    }
                     bCallerFreeProv = FALSE;
                 }
 
@@ -728,7 +732,7 @@ JNIEXPORT jbyteArray JNICALL Java_sun_security_mscapi_CSignature_signHash
             BYTE pbData[256];
             pbData[0] = '\0';
 
-            // Get name of the key container
+            // Get name of the key container 
             ::CryptGetProvParam((HCRYPTPROV)hCryptProv, PP_CONTAINER, //deprecated
                 (BYTE *)pbData, &cbData, 0);
 
@@ -1239,7 +1243,6 @@ void showProperty(NCRYPT_HANDLE hKey) {
     EXPORT_BLOB(LEGACY_RSAPRIVATE_BLOB);
     EXPORT_BLOB(LEGACY_RSAPUBLIC_BLOB);
     // Support starts from Windows 8 and Windows Server 2012
-    //EXPORT_BLOB(NCRYPT_CIPHER_KEY_BLOB);
     EXPORT_BLOB(NCRYPT_OPAQUETRANSPORT_BLOB);
     EXPORT_BLOB(NCRYPT_PKCS7_ENVELOPE_BLOB);
     //EXPORT_BLOB(NCRYPTBUFFER_CERT_BLOB);
