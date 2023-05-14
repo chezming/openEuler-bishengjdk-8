@@ -354,7 +354,7 @@ public interface MBeanServerConnection {
      * @exception InstanceNotFoundException The MBean specified is not
      * registered in the MBean server.
      * @exception MBeanRegistrationException The preDeregister
-     * ((<CODE>MBeanRegistration</CODE> interface) method of the MBean
+     * (<CODE>MBeanRegistration</CODE> interface) method of the MBean
      * has thrown an exception.
      * @exception RuntimeMBeanException If the <CODE>postDeregister</CODE>
      * (<CODE>MBeanRegistration</CODE> interface) method of the MBean throws a

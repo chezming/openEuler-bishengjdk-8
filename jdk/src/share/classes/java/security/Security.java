@@ -749,7 +749,7 @@ public final class Security {
      *          java.lang.SecurityManager#checkPermission} method
      *          denies
      *          access to retrieve the specified security property value
-     * @throws  NullPointerException is key is null
+     * @throws  NullPointerException if key is null
      *
      * @see #setProperty
      * @see java.security.SecurityPermission
