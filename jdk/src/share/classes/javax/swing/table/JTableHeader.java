@@ -884,7 +884,7 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
             private JTable table;
 
             /**
-             *  Constructs an AccessiblJTableHeaaderEntry
+             * Constructs an AccessiblJTableHeaaderEntry
              * @since 1.4
              */
             public AccessibleJTableHeaderEntry(int c, JTableHeader p, JTable t) {
