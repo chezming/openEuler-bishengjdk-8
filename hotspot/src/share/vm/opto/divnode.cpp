@@ -477,10 +477,7 @@ Node *DivINode::Ideal(PhaseGVN *phase, bool can_reshape) {
 
   if (i == 0) return NULL;      // Dividing by zero constant does not idealize
 
-  if (in(0) != NULL) {
-    phase->igvn_rehash_node_delayed(this);
-    set_req(0, NULL);           // Dividing by a not-zero constant; no faulting
-  }
+  set_req(0,NULL);              // Dividing by a not-zero constant; no faulting
 
   // Dividing by MININT does not optimize as a power-of-2 shift.
   if( i == min_jint ) return NULL;
@@ -579,10 +576,7 @@ Node *DivLNode::Ideal( PhaseGVN *phase, bool can_reshape) {
 
   if (l == 0) return NULL;      // Dividing by zero constant does not idealize
 
-  if (in(0) != NULL) {
-    phase->igvn_rehash_node_delayed(this);
-    set_req(0, NULL);           // Dividing by a not-zero constant; no faulting
-  }
+  set_req(0,NULL);              // Dividing by a not-zero constant; no faulting
 
   // Dividing by MINLONG does not optimize as a power-of-2 shift.
   if( l == min_jlong ) return NULL;

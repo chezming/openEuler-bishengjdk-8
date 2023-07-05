@@ -271,7 +271,6 @@ public:
   HeapRegionRemSet(G1BlockOffsetSharedArray* bosa, HeapRegion* hr);
 
   static uint num_par_rem_sets();
-  // Setup sparse and fine-grain tables sizes.
   static void setup_remset_size();
 
   HeapRegion* hr() const {

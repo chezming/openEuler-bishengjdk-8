@@ -1779,10 +1779,6 @@ void os::print_memory_info(outputStream* st) {
   st->cr();
 }
 
-void os::pd_print_file_descriptor(outputStream* st) {
-  // Nothing to do for now.
-}
-
 void os::print_siginfo(outputStream* st, void* siginfo) {
   const siginfo_t* si = (const siginfo_t*)siginfo;
 

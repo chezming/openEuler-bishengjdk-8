@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2014, 2023, Oracle and/or its affiliates. All rights reserved.
- * Copyright (c) 2023, Huawei Technologies Co., Ltd. All rights reserved.
+ * Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -20,75 +19,38 @@
  * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
  * or visit www.oracle.com if you need additional information or have any
  * questions.
+ *
  */
 
 /**
  * @test
  * @bug 8035968
- * @summary C2 support for MD5/SHA-1/SHA-224/SHA-256/SHA-384/SHA-512
+ * @summary C2 support for SHA on SPARC
  *
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=MD5
- *      compiler.intrinsics.sha.TestDigest
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=SHA-1
- *      compiler.intrinsics.sha.TestDigest
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=SHA-224
- *      compiler.intrinsics.sha.TestDigest
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=SHA-256
- *      compiler.intrinsics.sha.TestDigest
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=SHA-384
- *      compiler.intrinsics.sha.TestDigest
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=SHA-512
- *      compiler.intrinsics.sha.TestDigest
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=SHA-1   TestSHA
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=SHA-224 TestSHA
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=SHA-256 TestSHA
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=SHA-384 TestSHA
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=SHA-512 TestSHA
  *
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=MD5   -Doffset=1
- *      compiler.intrinsics.sha.TestDigest
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=SHA-1   -Doffset=1
- *      compiler.intrinsics.sha.TestDigest
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=SHA-224 -Doffset=1
- *      compiler.intrinsics.sha.TestDigest
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=SHA-256 -Doffset=1
- *      compiler.intrinsics.sha.TestDigest
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=SHA-384 -Doffset=1
- *      compiler.intrinsics.sha.TestDigest
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=SHA-512 -Doffset=1
- *      compiler.intrinsics.sha.TestDigest
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=SHA-1   -Doffset=1 TestSHA
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=SHA-224 -Doffset=1 TestSHA
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=SHA-256 -Doffset=1 TestSHA
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=SHA-384 -Doffset=1 TestSHA
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=SHA-512 -Doffset=1 TestSHA
  *
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=SHA-1   -Dalgorithm2=SHA-256
- *      compiler.intrinsics.sha.TestDigest
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=SHA-1   -Dalgorithm2=SHA-512
- *      compiler.intrinsics.sha.TestDigest
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=SHA-256 -Dalgorithm2=SHA-512
- *      compiler.intrinsics.sha.TestDigest
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=SHA-1   -Dalgorithm2=SHA-256 TestSHA
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=SHA-1   -Dalgorithm2=SHA-512 TestSHA
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=SHA-256 -Dalgorithm2=SHA-512 TestSHA
  *
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=SHA-1   -Dalgorithm2=MD5
- *      compiler.intrinsics.sha.TestDigest
- * @run main/othervm/timeout=600 -Xbatch
- *      -Dalgorithm=MD5     -Dalgorithm2=SHA-1
- *      compiler.intrinsics.sha.TestDigest
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=SHA-1   -Dalgorithm2=MD5     TestSHA
+ * @run main/othervm/timeout=600 -Xbatch -Dalgorithm=MD5     -Dalgorithm2=SHA-1   TestSHA
  */
-
-package compiler.intrinsics.sha;
 
 import java.security.MessageDigest;
 import java.util.Arrays;
 
-public class TestDigest {
+public class TestSHA {
     private static final int HASH_LEN = 64; /* up to 512-bit */
     private static final int ALIGN = 8;     /* for different data alignments */
 
@@ -101,14 +63,14 @@ public class TestDigest {
         int iters = (args.length > 0 ? Integer.valueOf(args[0]) : 100000);
         int warmupIters = (args.length > 1 ? Integer.valueOf(args[1]) : 20000);
 
-        testDigest(provider, algorithm, msgSize, offset, iters, warmupIters);
+        testSHA(provider, algorithm, msgSize, offset, iters, warmupIters);
 
         if (algorithm2.equals("") == false) {
-            testDigest(provider, algorithm2, msgSize, offset, iters, warmupIters);
+            testSHA(provider, algorithm2, msgSize, offset, iters, warmupIters);
         }
     }
 
-    public static void testDigest(String provider, String algorithm, int msgSize,
+    static void testSHA(String provider, String algorithm, int msgSize,
                         int offset, int iters, int warmupIters) throws Exception {
         System.out.println("provider = " + provider);
         System.out.println("algorithm = " + algorithm);
@@ -124,27 +86,27 @@ public class TestDigest {
         }
 
         try {
-            MessageDigest digest = MessageDigest.getInstance(algorithm, provider);
+            MessageDigest sha = MessageDigest.getInstance(algorithm, provider);
 
             /* do once, which doesn't use intrinsics */
-            digest.reset();
-            digest.update(data, offset, msgSize);
-            expectedHash = digest.digest();
+            sha.reset();
+            sha.update(data, offset, msgSize);
+            expectedHash = sha.digest();
 
             /* warm up */
             for (int i = 0; i < warmupIters; i++) {
-                digest.reset();
-                digest.update(data, offset, msgSize);
-                hash = digest.digest();
+                sha.reset();
+                sha.update(data, offset, msgSize);
+                hash = sha.digest();
             }
 
             /* check result */
             if (Arrays.equals(hash, expectedHash) == false) {
-                System.out.println("TestDigest Error: ");
+                System.out.println("TestSHA Error: ");
                 showArray(expectedHash, "expectedHash");
                 showArray(hash,         "computedHash");
                 //System.exit(1);
-                throw new Exception("TestDigest Error");
+                throw new Exception("TestSHA Error");
             } else {
                 showArray(hash, "hash");
             }
@@ -152,15 +114,15 @@ public class TestDigest {
             /* measure performance */
             long start = System.nanoTime();
             for (int i = 0; i < iters; i++) {
-                digest.reset();
-                digest.update(data, offset, msgSize);
-                hash = digest.digest();
+                sha.reset();
+                sha.update(data, offset, msgSize);
+                hash = sha.digest();
             }
             long end = System.nanoTime();
             double total = (double)(end - start)/1e9;         /* in seconds */
             double thruput = (double)msgSize*iters/1e6/total; /* in MB/s */
-            System.out.println("TestDigest runtime = " + total + " seconds");
-            System.out.println("TestDigest throughput = " + thruput + " MB/s");
+            System.out.println("TestSHA runtime = " + total + " seconds");
+            System.out.println("TestSHA throughput = " + thruput + " MB/s");
             System.out.println();
         } catch (Exception e) {
             System.out.println("Exception: " + e);

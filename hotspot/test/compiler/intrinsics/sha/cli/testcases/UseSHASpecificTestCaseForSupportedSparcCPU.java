@@ -33,13 +33,13 @@ import sha.predicate.IntrinsicPredicates;
  * instruction.
  */
 public class UseSHASpecificTestCaseForSupportedSparcCPU
-        extends DigestOptionsBase.TestCase {
+        extends SHAOptionsBase.TestCase {
     public UseSHASpecificTestCaseForSupportedSparcCPU(String optionName) {
-        super(DigestOptionsBase.USE_SHA_OPTION, new AndPredicate(Platform::isSparc,
+        super(SHAOptionsBase.USE_SHA_OPTION, new AndPredicate(Platform::isSparc,
                 IntrinsicPredicates.ANY_SHA_INSTRUCTION_AVAILABLE));
 
-        Asserts.assertEQ(optionName, DigestOptionsBase.USE_SHA_OPTION,
-                "Test case should be used for " + DigestOptionsBase.USE_SHA_OPTION
+        Asserts.assertEQ(optionName, SHAOptionsBase.USE_SHA_OPTION,
+                "Test case should be used for " + SHAOptionsBase.USE_SHA_OPTION
                         + " option only.");
     }
 
@@ -49,15 +49,14 @@ public class UseSHASpecificTestCaseForSupportedSparcCPU
         // all UseSHA*Intrinsics options were disabled.
         CommandLineOptionTest.verifySameJVMStartup(
                 null, new String[] { ".*UseSHA.*" }, ExitCode.OK,
-                DigestOptionsBase.UNLOCK_DIAGNOSTIC_VM_OPTIONS,
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA_OPTION, true),
+                        SHAOptionsBase.USE_SHA_OPTION, true),
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA1_INTRINSICS_OPTION, false),
+                        SHAOptionsBase.USE_SHA1_INTRINSICS_OPTION, false),
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA256_INTRINSICS_OPTION, false),
+                        SHAOptionsBase.USE_SHA256_INTRINSICS_OPTION, false),
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA512_INTRINSICS_OPTION, false));
+                        SHAOptionsBase.USE_SHA512_INTRINSICS_OPTION, false));
     }
 
     @Override
@@ -65,41 +64,38 @@ public class UseSHASpecificTestCaseForSupportedSparcCPU
         // Verify that UseSHA is disabled when all UseSHA*Intrinscs are
         // disabled.
         CommandLineOptionTest.verifyOptionValueForSameVM(
-                DigestOptionsBase.USE_SHA_OPTION, "false",
-                DigestOptionsBase.UNLOCK_DIAGNOSTIC_VM_OPTIONS,
+                SHAOptionsBase.USE_SHA_OPTION, "false",
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA1_INTRINSICS_OPTION, false),
+                        SHAOptionsBase.USE_SHA1_INTRINSICS_OPTION, false),
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA256_INTRINSICS_OPTION, false),
+                        SHAOptionsBase.USE_SHA256_INTRINSICS_OPTION, false),
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA512_INTRINSICS_OPTION, false));
+                        SHAOptionsBase.USE_SHA512_INTRINSICS_OPTION, false));
 
         CommandLineOptionTest.verifyOptionValueForSameVM(
                 // Verify that UseSHA is disabled when all UseSHA*Intrinscs are
                 // disabled even if it was explicitly enabled.
-                DigestOptionsBase.USE_SHA_OPTION, "false",
-                DigestOptionsBase.UNLOCK_DIAGNOSTIC_VM_OPTIONS,
+                SHAOptionsBase.USE_SHA_OPTION, "false",
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA_OPTION, true),
+                        SHAOptionsBase.USE_SHA_OPTION, true),
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA1_INTRINSICS_OPTION, false),
+                        SHAOptionsBase.USE_SHA1_INTRINSICS_OPTION, false),
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA256_INTRINSICS_OPTION, false),
+                        SHAOptionsBase.USE_SHA256_INTRINSICS_OPTION, false),
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA512_INTRINSICS_OPTION, false));
+                        SHAOptionsBase.USE_SHA512_INTRINSICS_OPTION, false));
 
         // Verify that explicitly disabled UseSHA option remains disabled even
         // if all UseSHA*Intrinsics options were enabled.
         CommandLineOptionTest.verifyOptionValueForSameVM(
-                DigestOptionsBase.USE_SHA_OPTION, "false",
-                DigestOptionsBase.UNLOCK_DIAGNOSTIC_VM_OPTIONS,
+                SHAOptionsBase.USE_SHA_OPTION, "false",
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA_OPTION, false),
+                        SHAOptionsBase.USE_SHA_OPTION, false),
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA1_INTRINSICS_OPTION, true),
+                        SHAOptionsBase.USE_SHA1_INTRINSICS_OPTION, true),
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA256_INTRINSICS_OPTION, true),
+                        SHAOptionsBase.USE_SHA256_INTRINSICS_OPTION, true),
                 CommandLineOptionTest.prepareBooleanFlag(
-                        DigestOptionsBase.USE_SHA512_INTRINSICS_OPTION, true));
+                        SHAOptionsBase.USE_SHA512_INTRINSICS_OPTION, true));
     }
 }

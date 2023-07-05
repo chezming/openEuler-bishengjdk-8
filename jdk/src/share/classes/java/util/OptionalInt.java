@@ -246,7 +246,7 @@ public final class OptionalInt {
     @Override
     public String toString() {
         return isPresent
-                ? ("OptionalInt[" + value + "]")
+                ? String.format("OptionalInt[%s]", value)
                 : "OptionalInt.empty";
     }
 }

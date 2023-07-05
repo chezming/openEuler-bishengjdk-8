@@ -270,7 +270,7 @@ public interface ObjectInputFilter {
         /**
          * Current configured filter.
          */
-        private static volatile ObjectInputFilter serialFilter = configuredFilter;
+        private static ObjectInputFilter serialFilter = configuredFilter;
 
         /**
          * Get the filter for classes being deserialized on the ObjectInputStream.
@@ -304,7 +304,9 @@ public interface ObjectInputFilter {
          * @return the process-wide serialization filter or {@code null} if not configured
          */
         public static ObjectInputFilter getSerialFilter() {
-            return serialFilter;
+            synchronized (serialFilterLock) {
+                return serialFilter;
+            }
         }
 
         /**
