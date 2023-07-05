@@ -35,16 +35,16 @@
  */
 public class TestUseSHA1IntrinsicsOptionOnUnsupportedCPU {
     public static void main(String args[]) throws Throwable {
-        new DigestOptionsBase(
+        new SHAOptionsBase(
                 new GenericTestCaseForUnsupportedSparcCPU(
-                        DigestOptionsBase.USE_SHA1_INTRINSICS_OPTION),
+                        SHAOptionsBase.USE_SHA1_INTRINSICS_OPTION),
                 new UseSHAIntrinsicsSpecificTestCaseForUnsupportedSparcCPU(
-                        DigestOptionsBase.USE_SHA1_INTRINSICS_OPTION),
+                        SHAOptionsBase.USE_SHA1_INTRINSICS_OPTION),
                 new GenericTestCaseForUnsupportedAArch64CPU(
-                        DigestOptionsBase.USE_SHA1_INTRINSICS_OPTION),
+                        SHAOptionsBase.USE_SHA1_INTRINSICS_OPTION),
                 new GenericTestCaseForUnsupportedX86CPU(
-                        DigestOptionsBase.USE_SHA1_INTRINSICS_OPTION),
+                        SHAOptionsBase.USE_SHA1_INTRINSICS_OPTION),
                 new GenericTestCaseForOtherCPU(
-                        DigestOptionsBase.USE_SHA1_INTRINSICS_OPTION)).test();
+                        SHAOptionsBase.USE_SHA1_INTRINSICS_OPTION)).test();
     }
 }

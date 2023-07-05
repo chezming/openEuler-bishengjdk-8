@@ -34,16 +34,16 @@
  */
 public class TestUseSHAOptionOnUnsupportedCPU {
     public static void main(String args[]) throws Throwable {
-        new DigestOptionsBase(
+        new SHAOptionsBase(
                 new GenericTestCaseForUnsupportedSparcCPU(
-                        DigestOptionsBase.USE_SHA_OPTION),
+                        SHAOptionsBase.USE_SHA_OPTION),
                 new UseSHASpecificTestCaseForUnsupportedSparcCPU(
-                        DigestOptionsBase.USE_SHA_OPTION),
+                        SHAOptionsBase.USE_SHA_OPTION),
                 new GenericTestCaseForUnsupportedAArch64CPU(
-                        DigestOptionsBase.USE_SHA_OPTION),
+                        SHAOptionsBase.USE_SHA_OPTION),
                 new GenericTestCaseForUnsupportedX86CPU(
-                        DigestOptionsBase.USE_SHA_OPTION),
+                        SHAOptionsBase.USE_SHA_OPTION),
                 new GenericTestCaseForOtherCPU(
-                        DigestOptionsBase.USE_SHA_OPTION)).test();
+                        SHAOptionsBase.USE_SHA_OPTION)).test();
     }
 }

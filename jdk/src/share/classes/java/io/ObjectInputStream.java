@@ -387,7 +387,7 @@ public class ObjectInputStream
     /**
      * value of "useFastSerializer" property
      */
-    private final boolean defaultFastSerializer = UNSAFE.getUseFastSerializer();
+    private static final boolean defaultFastSerializer = UNSAFE.getUseFastSerializer();
 
     /**
      *  true or false for open FastSerilizer

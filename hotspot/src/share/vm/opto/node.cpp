@@ -675,7 +675,6 @@ void Node::destruct() {
   *(address*)this = badAddress;  // smash the C++ vtbl, probably
   _in = _out = (Node**) badAddress;
   _max = _cnt = _outmax = _outcnt = 0;
-  compile->remove_modified_node(this);
 #endif
 }
 
@@ -822,7 +821,6 @@ void Node::del_req( uint idx ) {
   _in[idx] = in(--_cnt); // Compact the array
   // Avoid spec violation: Gap in prec edges.
   close_prec_gap_at(_cnt);
-  Compile::current()->record_modified_node(this);
 }
 
 //------------------------------del_req_ordered--------------------------------
@@ -839,7 +837,6 @@ void Node::del_req_ordered( uint idx ) {
   }
   // Avoid spec violation: Gap in prec edges.
   close_prec_gap_at(_cnt);
-  Compile::current()->record_modified_node(this);
 }
 
 //------------------------------ins_req----------------------------------------
@@ -1379,7 +1376,6 @@ static void kill_dead_code( Node *dead, PhaseIterGVN *igvn ) {
       // Done with outputs.
       igvn->hash_delete(dead);
       igvn->_worklist.remove(dead);
-      igvn->C->remove_modified_node(dead);
       igvn->set_type(dead, Type::TOP);
       if (dead->is_macro()) {
         igvn->C->remove_macro_node(dead);

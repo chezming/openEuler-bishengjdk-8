@@ -218,6 +218,7 @@ bool GCTrimNative::should_trim(bool ignore_delay) {
 
 void GCTrimNative::execute_trim() {
   if (GCTrimNativeHeap) {
+    assert(!_async_mode, "Only call for non-async mode");
     do_trim();
     _next_trim_not_before = os::elapsedTime() + GCTrimNativeHeapInterval;
   }

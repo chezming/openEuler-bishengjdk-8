@@ -599,19 +599,19 @@ oop SharedRuntime::retrieve_receiver( Symbol* sig, frame caller ) {
 }
 
 
-void SharedRuntime::throw_and_post_jvmti_exception(JavaThread *thread, Handle h_exception, const char *message) {
+void SharedRuntime::throw_and_post_jvmti_exception(JavaThread *thread, Handle h_exception) {
   if (JvmtiExport::can_post_on_exceptions()) {
     vframeStream vfst(thread, true);
     methodHandle method = methodHandle(thread, vfst.method());
     address bcp = method()->bcp_from(vfst.bci());
     JvmtiExport::post_exception_throw(thread, method(), bcp, h_exception());
   }
-  Exceptions::_throw(thread, __FILE__, __LINE__, h_exception, message);
+  Exceptions::_throw(thread, __FILE__, __LINE__, h_exception);
 }
 
 void SharedRuntime::throw_and_post_jvmti_exception(JavaThread *thread, Symbol* name, const char *message) {
   Handle h_exception = Exceptions::new_exception(thread, name, message);
-  throw_and_post_jvmti_exception(thread, h_exception, message);
+  throw_and_post_jvmti_exception(thread, h_exception);
 }
 
 // The interpreter code to call this tracing function is only

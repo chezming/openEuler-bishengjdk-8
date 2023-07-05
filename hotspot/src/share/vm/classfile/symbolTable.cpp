@@ -44,10 +44,18 @@
 
 PRAGMA_FORMAT_MUTE_WARNINGS_FOR_GCC
 
-OffsetCompactHashtable<
+inline bool symbol_equals_compact_hashtable_entry(Symbol* value, const char* key, int len) {
+  if (value->equals(key, len)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+static OffsetCompactHashtable<
   const char*, Symbol*,
   symbol_equals_compact_hashtable_entry
-> SymbolTable::_dynamic_shared_table;
+> _dynamic_shared_table;
 
 // --------------------------------------------------------------------------
 
@@ -246,6 +254,7 @@ Symbol* SymbolTable::lookup_shared(const char* name,
       // always uses the same original hash code.
       hash = java_lang_String::hash_code((const jbyte*)name, len);
     }
+
     sym = _dynamic_shared_table.lookup(name, hash, len);
   }
   return sym;

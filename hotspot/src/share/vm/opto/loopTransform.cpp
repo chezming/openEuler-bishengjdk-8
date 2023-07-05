@@ -934,13 +934,15 @@ void PhaseIdealLoop::insert_pre_post_loops( IdealLoopTree *loop, Node_List &old_
   if( bol->outcnt() != 1 ) {
     bol = bol->clone();
     register_new_node(bol,main_end->in(CountedLoopEndNode::TestControl));
-    _igvn.replace_input_of(main_end, CountedLoopEndNode::TestValue, bol);
+    _igvn.hash_delete(main_end);
+    main_end->set_req(CountedLoopEndNode::TestValue, bol);
   }
   // Need only 1 user of 'cmp' because I will be hacking the loop bounds.
   if( cmp->outcnt() != 1 ) {
     cmp = cmp->clone();
     register_new_node(cmp,main_end->in(CountedLoopEndNode::TestControl));
-    _igvn.replace_input_of(bol, 1, cmp);
+    _igvn.hash_delete(bol);
+    bol->set_req(1, cmp);
   }
 
   //------------------------------
@@ -1144,7 +1146,8 @@ void PhaseIdealLoop::insert_pre_post_loops( IdealLoopTree *loop, Node_List &old_
     Node* pre_bol = pre_end->in(CountedLoopEndNode::TestValue)->as_Bool();
     BoolNode* new_bol0 = new (C) BoolNode(pre_bol->in(1), new_test);
     register_new_node( new_bol0, pre_head->in(0) );
-    _igvn.replace_input_of(pre_end, CountedLoopEndNode::TestValue, new_bol0);
+    _igvn.hash_delete(pre_end);
+    pre_end->set_req(CountedLoopEndNode::TestValue, new_bol0);
     // Modify main loop guard condition
     assert(min_iff->in(CountedLoopEndNode::TestValue) == min_bol, "guard okay");
     BoolNode* new_bol1 = new (C) BoolNode(min_bol->in(1), new_test);
@@ -1155,7 +1158,8 @@ void PhaseIdealLoop::insert_pre_post_loops( IdealLoopTree *loop, Node_List &old_
     BoolNode* main_bol = main_end->in(CountedLoopEndNode::TestValue)->as_Bool();
     BoolNode* new_bol2 = new (C) BoolNode(main_bol->in(1), new_test);
     register_new_node( new_bol2, main_end->in(CountedLoopEndNode::TestControl) );
-    _igvn.replace_input_of(main_end, CountedLoopEndNode::TestValue, new_bol2);
+    _igvn.hash_delete(main_end);
+    main_end->set_req(CountedLoopEndNode::TestValue, new_bol2);
   }
 
   // Flag main loop
@@ -1364,7 +1368,8 @@ void PhaseIdealLoop::do_unroll( IdealLoopTree *loop, Node_List &old_new, bool ad
         Node* bol2 = loop_end->in(1)->clone();
         bol2->set_req(1, cmp2);
         register_new_node(bol2, ctrl2);
-        _igvn.replace_input_of(loop_end, 1, bol2);
+        _igvn.hash_delete(loop_end);
+        loop_end->set_req(1, bol2);
       }
       // Step 3: Find the min-trip test guaranteed before a 'main' loop.
       // Make it a 1-trip test (means at least 2 trips).
@@ -1373,7 +1378,8 @@ void PhaseIdealLoop::do_unroll( IdealLoopTree *loop, Node_List &old_new, bool ad
       // can edit it's inputs directly.  Hammer in the new limit for the
       // minimum-trip guard.
       assert(opaq->outcnt() == 1, "");
-      _igvn.replace_input_of(opaq, 1, new_limit);
+      _igvn.hash_delete(opaq);
+      opaq->set_req(1, new_limit);
     }
 
     // Adjust max trip count. The trip count is intentionally rounded
@@ -1423,7 +1429,8 @@ void PhaseIdealLoop::do_unroll( IdealLoopTree *loop, Node_List &old_new, bool ad
     register_new_node( cmp2, ctrl2 );
     Node *bol2 = new (C) BoolNode( cmp2, loop_end->test_trip() );
     register_new_node( bol2, ctrl2 );
-    _igvn.replace_input_of(loop_end, CountedLoopEndNode::TestValue, bol2);
+    _igvn.hash_delete(loop_end);
+    loop_end->set_req(CountedLoopEndNode::TestValue, bol2);
 
     // Step 3: Find the min-trip test guaranteed before a 'main' loop.
     // Make it a 1-trip test (means at least 2 trips).
@@ -1971,7 +1978,8 @@ void PhaseIdealLoop::do_range_check( IdealLoopTree *loop, Node_List &old_new ) {
                                  : (Node*)new (C) MaxINode(pre_limit, orig_limit);
     register_new_node(pre_limit, pre_ctrl);
   }
-  _igvn.replace_input_of(pre_opaq, 1, pre_limit);
+  _igvn.hash_delete(pre_opaq);
+  pre_opaq->set_req(1, pre_limit);
 
   // Note:: we are making the main loop limit no longer precise;
   // need to round up based on stride.
@@ -2000,9 +2008,10 @@ void PhaseIdealLoop::do_range_check( IdealLoopTree *loop, Node_List &old_new ) {
   Node *main_bol = main_cle->in(1);
   // Hacking loop bounds; need private copies of exit test
   if( main_bol->outcnt() > 1 ) {// BoolNode shared?
+    _igvn.hash_delete(main_cle);
     main_bol = main_bol->clone();// Clone a private BoolNode
     register_new_node( main_bol, main_cle->in(0) );
-    _igvn.replace_input_of(main_cle, 1, main_bol);
+    main_cle->set_req(1,main_bol);
   }
   Node *main_cmp = main_bol->in(1);
   if( main_cmp->outcnt() > 1 ) { // CmpNode shared?

@@ -360,10 +360,6 @@ void print_statistics() {
     SystemDictionary::print();
   }
 
-  if (LogTouchedMethods && PrintTouchedMethodsAtExit) {
-    Method::print_touched_methods(tty);
-  }
-
   if (PrintBiasedLockingStatistics) {
     BiasedLocking::print_counters();
   }
@@ -411,10 +407,6 @@ void print_statistics() {
   // Native memory tracking data
   if (PrintNMTStatistics) {
     MemTracker::final_report(tty);
-  }
-
-  if (LogTouchedMethods && PrintTouchedMethodsAtExit) {
-    Method::print_touched_methods(tty);
   }
 }
 

@@ -63,7 +63,6 @@ Monitor* StringDedupQueue_lock        = NULL;
 Mutex*   StringDedupTable_lock        = NULL;
 Mutex*   CodeCache_lock               = NULL;
 Mutex*   MethodData_lock              = NULL;
-Mutex*   TouchedMethodLog_lock        = NULL;
 Mutex*   RetData_lock                 = NULL;
 Monitor* VMOperationQueue_lock        = NULL;
 Monitor* VMOperationRequest_lock      = NULL;
@@ -283,7 +282,6 @@ void mutex_init() {
 
   def(Compile_lock                 , Mutex  , nonleaf+3,   true );
   def(MethodData_lock              , Mutex  , nonleaf+3,   false);
-  def(TouchedMethodLog_lock        , Mutex  , nonleaf+3,   false);
 
   def(MethodCompileQueue_lock      , Monitor, nonleaf+4,   true );
   def(Debug2_lock                  , Mutex  , nonleaf+4,   true );

@@ -29,20 +29,11 @@ public class MathIntrinsic {
     enum IntIntrinsic implements CompilerWhiteBoxTest.TestCase {
         Add {
             @Override
-            Executable testMethod() throws NoSuchMethodException, ClassNotFoundException {
-                return Class.forName("java.lang.Math").getDeclaredMethod("addExact", int.class, int.class);
-            }
-
-            @Override
             Object execMathMethod() {
                 return intR = Math.addExact(int1, int2);
             }
         },
         Subtract {
-            @Override
-            Executable testMethod() throws NoSuchMethodException, ClassNotFoundException {
-                return Class.forName("java.lang.Math").getDeclaredMethod("subtractExact", int.class, int.class);
-            }
             @Override
             Object execMathMethod() {
                 return intR = Math.subtractExact(int1, int2);
@@ -50,21 +41,11 @@ public class MathIntrinsic {
         },
         Multiply {
             @Override
-            Executable testMethod() throws NoSuchMethodException, ClassNotFoundException {
-                return Class.forName("java.lang.Math").getDeclaredMethod("multiplyExact", int.class, int.class);
-            }
-
-            @Override
             Object execMathMethod() {
                 return intR = Math.multiplyExact(int1, int2);
             }
         },
         Increment {
-            @Override
-            Executable testMethod() throws NoSuchMethodException, ClassNotFoundException {
-                return Class.forName("java.lang.Math").getDeclaredMethod("incrementExact", int.class);
-            }
-
             @Override
             Object execMathMethod() {
                 return intR = Math.incrementExact(int1);
@@ -72,21 +53,11 @@ public class MathIntrinsic {
         },
         Decrement {
             @Override
-            Executable testMethod() throws NoSuchMethodException, ClassNotFoundException {
-                return Class.forName("java.lang.Math").getDeclaredMethod("decrementExact", int.class);
-            }
-
-            @Override
             Object execMathMethod() {
                 return intR = Math.decrementExact(int1);
             }
         },
         Negate {
-            @Override
-              Executable testMethod() throws NoSuchMethodException, ClassNotFoundException {
-                return Class.forName("java.lang.Math").getDeclaredMethod("negateExact", int.class);
-            }
-
             @Override
             Object execMathMethod() {
                 return intR = Math.negateExact(int1);
@@ -96,18 +67,7 @@ public class MathIntrinsic {
         protected int int2;
         protected int intR;
 
-        abstract Executable testMethod() throws NoSuchMethodException, ClassNotFoundException;
         abstract Object execMathMethod();
-
-        public Executable getTestMethod() {
-            try {
-                return testMethod();
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException("Test bug, no such method: " + e);
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException("Test bug, no such class: " + e);
-            }
-        }
 
         @Override
         public Executable getExecutable() {
@@ -133,21 +93,11 @@ public class MathIntrinsic {
     enum LongIntrinsic implements CompilerWhiteBoxTest.TestCase {
         Add {
             @Override
-            Executable testMethod() throws NoSuchMethodException, ClassNotFoundException {
-                return Class.forName("java.lang.Math").getDeclaredMethod("addExact", long.class, long.class);
-            }
-
-            @Override
             Object execMathMethod() {
                 return longR = Math.addExact(long1, long2);
             }
         },
         Subtract {
-            @Override
-            Executable testMethod() throws NoSuchMethodException, ClassNotFoundException {
-                return Class.forName("java.lang.Math").getDeclaredMethod("subtractExact", long.class, long.class);
-            }
-
             @Override
             Object execMathMethod() {
                 return longR = Math.subtractExact(long1, long2);
@@ -155,21 +105,11 @@ public class MathIntrinsic {
         },
         Multiply {
             @Override
-            Executable testMethod() throws NoSuchMethodException, ClassNotFoundException {
-                return Class.forName("java.lang.Math").getDeclaredMethod("multiplyExact", long.class, long.class);
-            }
-
-            @Override
             Object execMathMethod() {
                 return longR = Math.multiplyExact(long1, long2);
             }
         },
         Increment {
-            @Override
-            Executable testMethod() throws NoSuchMethodException, ClassNotFoundException {
-                return Class.forName("java.lang.Math").getDeclaredMethod("incrementExact", long.class);
-            }
-
             @Override
             Object execMathMethod() {
                 return longR = Math.incrementExact(long1);
@@ -177,21 +117,11 @@ public class MathIntrinsic {
         },
         Decrement {
             @Override
-            Executable testMethod() throws NoSuchMethodException, ClassNotFoundException {
-                return Class.forName("java.lang.Math").getDeclaredMethod("decrementExact", long.class);
-            }
-
-            @Override
             Object execMathMethod() {
                 return longR = Math.decrementExact(long1);
             }
         },
         Negate {
-            @Override
-            Executable testMethod() throws NoSuchMethodException, ClassNotFoundException {
-                return Class.forName("java.lang.Math").getDeclaredMethod("negateExact", long.class);
-            }
-
             @Override
             Object execMathMethod() {
                 return longR = Math.negateExact(long1);
@@ -201,18 +131,7 @@ public class MathIntrinsic {
         protected long long2;
         protected long longR;
 
-        abstract Executable testMethod() throws NoSuchMethodException, ClassNotFoundException;
         abstract Object execMathMethod();
-
-        public Executable getTestMethod() {
-            try {
-                return testMethod();
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException("Test bug, no such method: " + e);
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException("Test bug, no such class: " + e);
-            }
-        }
 
         @Override
         public Executable getExecutable() {
