@@ -30,7 +30,7 @@ default:
 # serially, regardless of -j. Recursively called makefiles will not be
 # affected, however. This is required for correct dependency management.
 .NOTPARALLEL:
-
+export LANG := en_US.UTF-8
 # The shell code below will be executed on /usr/ccs/bin/make on Solaris, but not in GNU make.
 # /usr/ccs/bin/make lacks basically every other flow control mechanism.
 TEST_FOR_NON_GNUMAKE:sh=echo You are not using GNU make/gmake, this is a requirement. Check your path. 1>&2 && exit 1
