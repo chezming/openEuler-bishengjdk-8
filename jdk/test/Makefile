@@ -34,7 +34,7 @@
 .SUFFIXES: .java
 CO=
 GET=
-export LANG := en_US.UTF-8
+
 # Utilities used
 AWK       = awk
 CAT       = cat
