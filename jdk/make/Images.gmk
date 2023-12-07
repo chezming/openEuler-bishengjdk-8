@@ -787,9 +787,9 @@ endif # Profile
 
 ################################################################################
 copy-font-library:
-        @echo "start"
-        cp -R $(SRC_PATH)/* $(DST_PATH1)
-        cp -R $(SRC_PATH)/* $(DST_PATH2)
-        @echo "finish"
+    @echo "start"
+    cp -R $(SRC_PATH)/* $(DST_PATH1)
+    cp -R $(SRC_PATH)/* $(DST_PATH2)
+    @echo "finish"
 .PHONY: default images jre-image jdk-image copy-font-library
 
