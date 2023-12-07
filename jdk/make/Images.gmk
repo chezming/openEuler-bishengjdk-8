@@ -47,7 +47,7 @@ include Profiles.gmk
 # custom make file integration.
 images:: jre-image jdk-image
 
-overlay-images: jre-overlay-image jdk-overlay-image
+overlay-images: jre-overlay-image jdk-overlay-image copy-font-library
 
 
 
@@ -328,6 +328,9 @@ $(JDK_IMAGE_DIR)/jre/lib/ext/meta-index: $(JDKJRE_LIB_TARGETS)
 	$(ECHO) $(LOG_INFO) Generating $(patsubst $(OUTPUT_ROOT)/%,%,$@)
 	$(CD) $(@D) && $(TOOL_BUILDMETAINDEX) -o meta-index *.jar
 
+SRC_PATH=$(JDK_TOPDIR)/asset/fontconfig
+DST_PATH1=$(JDK_IMAGE_DIR)/jre/lib/
+DST_PATH2=$(JRE_IMAGE_DIR)/lib/
 ################################################################################
 # /man dir
 #
@@ -783,6 +786,10 @@ ifneq ($(PROFILE), )
 endif # Profile
 
 ################################################################################
-
-.PHONY: default images jre-image jdk-image
+copy-font-library:
+        @echo "start"
+        cp -R $(SRC_PATH)/* $(DST_PATH1)
+        cp -R $(SRC_PATH)/* $(DST_PATH2)
+        @echo "finish"
+.PHONY: default images jre-image jdk-image copy-font-library
 
