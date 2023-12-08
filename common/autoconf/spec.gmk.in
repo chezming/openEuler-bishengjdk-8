@@ -155,6 +155,7 @@ LAUNCHER_NAME:=@LAUNCHER_NAME@
 PRODUCT_NAME:=@PRODUCT_NAME@
 PRODUCT_SUFFIX:=@PRODUCT_SUFFIX@
 JDK_RC_PLATFORM_NAME:=@JDK_RC_PLATFORM_NAME@
+VENDOR_NAME:=@VENDOR_NAME@
 COMPANY_NAME:=@COMPANY_NAME@
 MACOSX_BUNDLE_NAME_BASE=@MACOSX_BUNDLE_NAME_BASE@
 MACOSX_BUNDLE_ID_BASE=@MACOSX_BUNDLE_ID_BASE@
@@ -185,7 +186,7 @@ ifneq ($(COMPANY_NAME),)
   # and "java.vm.vendor" properties is hard-coded into the source code (i.e. in
   # System.c in the jdk for "vm.vendor" and vm_version.cpp in the VM for "java.vm.vendor")
   ifneq ($(COMPANY_NAME), N/A)
-    VERSION_CFLAGS += -DVENDOR='"$(COMPANY_NAME)"'
+    VERSION_CFLAGS += -DVENDOR='"$(VENDOR_NAME)"'
   endif
 endif
 
