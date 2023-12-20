@@ -1,3 +1,6 @@
+/*
+ * Copyright © 2023 Xiaotao NAN. All rights reserved.
+ */
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Font;
