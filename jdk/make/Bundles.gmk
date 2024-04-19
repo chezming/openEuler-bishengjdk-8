@@ -64,7 +64,7 @@ ifeq ($(OPENJDK_TARGET_OS), macosx)
   ifeq ($(COMPANY_NAME), N/A)
     BUNDLE_VENDOR := UNDEFINED
   else
-    BUNDLE_VENDOR := $(COMPANY_NAME)
+    BUNDLE_VENDOR := $(VENDOR_NAME)
   endif
 
 

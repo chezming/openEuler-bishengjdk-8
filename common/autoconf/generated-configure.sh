@@ -831,6 +831,7 @@ JDK_VERSION
 COPYRIGHT_YEAR
 VENDOR_URL_VM_BUG
 VENDOR_URL_BUG
+VENDOR_NAME
 VENDOR_URL
 INTERNAL_VERSION
 COMPANY_NAME
@@ -20511,7 +20512,7 @@ fi
   elif test "x$with_vendor_name" != x; then
     # Only set COMPANY_NAME if '--with-vendor-name' was used and is not empty.
     # Otherwise we will use the value from "version-numbers" included above.
-    COMPANY_NAME="$with_vendor_name"
+    VENDOR_NAME="$with_vendor_name"
   fi
 
 
