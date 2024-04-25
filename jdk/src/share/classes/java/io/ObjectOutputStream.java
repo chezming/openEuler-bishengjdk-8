@@ -240,7 +240,7 @@ public class ObjectOutputStream
      * Value of "UseFastSerializer" property. The fastSerializer is turned
      * on when it is true.
      */
-    private final boolean useFastSerializer = UNSAFE.getUseFastSerializer();
+    private boolean useFastSerializer = UNSAFE.getUseFastSerializer();
 
     /**
      * value of  "printFastSerializer" property,
@@ -249,11 +249,52 @@ public class ObjectOutputStream
     private static final boolean printFastSerializer = java.security.AccessController.doPrivileged(
             new sun.security.action.GetBooleanAction(
                     "printFastSerializer")).booleanValue();
+    
+    /**
+     * Value of "excludeFastSerializerPackage" property.
+     */
+    private static final String excludeFastSerializerPackage = java.security.AccessController.doPrivileged(
+            new sun.security.action.GetPropertyAction(
+                    "excludeFastSerializerPackage"));
+    /**
+     * Value of "excludeFastSerializerClass" property.
+     */
+    private static final String excludeFastSerializerClass = java.security.AccessController.doPrivileged(
+            new sun.security.action.GetPropertyAction(
+                    "excludeFastSerializerClass"));
 
     /**
      * Magic number that is written to the stream header when using fastserilizer.
      */
     private static final short STREAM_MAGIC_FAST = (short)0xdeca;
+
+     /**
+     * By default, classes under javax.management, sun.rmi, and sun.rmi.transport do not perform fast serialization,
+     * and you can use -DexcludeFastSerializerPackage and -DexcludeFastSerializerClass to customize the package paths
+     * that do not perform fast serialization, as well as specific class names.
+     */
+    private void checkFastSerializerStatus() {
+        String packageName = "";
+        if (  null != this.getClass().getPackage() ) {
+                packageName = this.getClass().getPackage().getName();
+        }
+        String className = this.getClass().getSimpleName();
+        // -DexcludeFastSerializerPackage="sun.rmi.transport"
+        StringBuilder espStringBuilder = new StringBuilder("javax.management,sun.rmi,sun.rmi.transport,");
+        if ( null != excludeFastSerializerPackage && !"".equals(excludeFastSerializerPackage)) {
+            espStringBuilder.append(excludeFastSerializerPackage);
+        }
+        boolean espExist = (-1==espStringBuilder.toString().indexOf(packageName))?false:true;
+        // -DexcludeFastSerializerClass=","
+        StringBuilder escStringBuilder = new StringBuilder("javax.management,sun.rmi,sun.rmi.transport,");
+        if ( null != excludeFastSerializerClass && !"".equals(excludeFastSerializerClass)) {
+            escStringBuilder.append(excludeFastSerializerClass);
+        }
+        boolean escExist = (-1==escStringBuilder.toString().indexOf(className))?false:true;
+        if( espExist || escExist ) {
+            this.useFastSerializer = false;
+        }
+    }
 
     /**
      * Creates an ObjectOutputStream that writes to the specified OutputStream.
@@ -279,6 +320,7 @@ public class ObjectOutputStream
      * @see     ObjectInputStream#ObjectInputStream(InputStream)
      */
     public ObjectOutputStream(OutputStream out) throws IOException {
+        checkFastSerializerStatus();
         verifySubclass();
         bout = new BlockDataOutputStream(out);
         handles = new HandleTable(10, (float) 3.00);
@@ -311,6 +353,7 @@ public class ObjectOutputStream
      * @see java.io.SerializablePermission
      */
     protected ObjectOutputStream() throws IOException, SecurityException {
+        checkFastSerializerStatus();
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkPermission(SUBCLASS_IMPLEMENTATION_PERMISSION);
