@@ -49,6 +49,13 @@ import sun.rmi.transport.Target;
 public class MarshalOutputStream extends ObjectOutputStream
 {
     /**
+     * value of  "enableRMIFastSerializerClass" property
+     */
+    private static final boolean enableRMIFastSerializerClass =
+	            java.security.AccessController.doPrivileged(
+				                new sun.security.action.GetBooleanAction(
+							                "enableRMIFastSerializerClass")).booleanValue();
+    /**
      * Creates a marshal output stream with protocol version 1.
      */
     public MarshalOutputStream(OutputStream out) throws IOException {
@@ -70,6 +77,11 @@ public class MarshalOutputStream extends ObjectOutputStream
                 return null;
             }
         });
+    }
+
+    @Override
+    protected boolean enableRMIFastSerializerClass(){
+    	return this.enableRMIFastSerializerClass;
     }
 
     /**
