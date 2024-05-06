@@ -71,7 +71,6 @@ void InlineCacheBuffer_init();
 void compilerOracle_init();
 void compilationPolicy_init();
 void compileBroker_init();
-void dependencyContext_init();
 
 // Initialization after compiler initialization
 bool universe_post_init();  // must happen after compiler_init
@@ -128,7 +127,6 @@ jint init_globals() {
   compilerOracle_init();
   compilationPolicy_init();
   compileBroker_init();
-  dependencyContext_init();
   VMRegImpl::set_regName();
 
   if (!universe_post_init()) {

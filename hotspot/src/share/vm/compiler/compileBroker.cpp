@@ -26,7 +26,6 @@
 #include "classfile/systemDictionary.hpp"
 #include "classfile/vmSymbols.hpp"
 #include "code/codeCache.hpp"
-#include "code/dependencyContext.hpp"
 #include "compiler/compileBroker.hpp"
 #include "compiler/compileLog.hpp"
 #include "compiler/compilerOracle.hpp"
@@ -919,6 +918,7 @@ void CompileBroker::compilation_init() {
                  PerfDataManager::create_counter(JAVA_CI, "totalTime",
                                                  PerfData::U_Ticks, CHECK);
   }
+
 
   if (UsePerfData) {
 
