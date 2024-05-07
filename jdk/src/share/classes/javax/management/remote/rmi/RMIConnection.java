@@ -363,7 +363,7 @@ public interface RMIConnection extends Closeable, Remote {
      * @throws InstanceNotFoundException The MBean specified is not
      * registered in the MBean server.
      * @throws MBeanRegistrationException The preDeregister
-     * ((<code>MBeanRegistration</code> interface) method of the MBean
+     * (<code>MBeanRegistration</code> interface) method of the MBean
      * has thrown an exception.
      * @throws RuntimeOperationsException Wraps a
      * <code>java.lang.IllegalArgumentException</code>: The object
